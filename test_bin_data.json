@@ -1,0 +1,418 @@
+{
+  "bins": [
+    {
+      "width": 98.0,
+      "height": 910.0,
+      "used_height": 910.0,
+      "rectangles": [
+        {
+          "rectangle": {
+            "name": "Item20",
+            "width": 98.0,
+            "height": 72.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 0
+        },
+        {
+          "rectangle": {
+            "name": "Item22",
+            "width": 76.5,
+            "height": 88.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 72.0
+        },
+        {
+          "rectangle": {
+            "name": "Item20:part2",
+            "width": 9.125,
+            "height": 72.0,
+            "rotated": false
+          },
+          "x": 76.5,
+          "y": 72.0
+        },
+        {
+          "rectangle": {
+            "name": "Item38",
+            "width": 77.25,
+            "height": 86.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 160.0
+        },
+        {
+          "rectangle": {
+            "name": "Item4",
+            "width": 75.5,
+            "height": 86.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 246.0
+        },
+        {
+          "rectangle": {
+            "name": "Item5",
+            "width": 75.5,
+            "height": 86.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 332.0
+        },
+        {
+          "rectangle": {
+            "name": "Item26",
+            "width": 71.375,
+            "height": 79.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 418.0
+        },
+        {
+          "rectangle": {
+            "name": "Item16",
+            "width": 64.375,
+            "height": 79.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 497.0
+        },
+        {
+          "rectangle": {
+            "name": "Item14",
+            "width": 32.875,
+            "height": 86.0,
+            "rotated": false
+          },
+          "x": 64.375,
+          "y": 497.0
+        },
+        {
+          "rectangle": {
+            "name": "Item24",
+            "width": 65.625,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 583.0
+        },
+        {
+          "rectangle": {
+            "name": "Item27",
+            "width": 65.375,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 653.0
+        },
+        {
+          "rectangle": {
+            "name": "Item1",
+            "width": 65.0,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 723.0
+        },
+        {
+          "rectangle": {
+            "name": "Item7",
+            "width": 64.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 793.0
+        },
+        {
+          "rectangle": {
+            "name": "Item17",
+            "width": 40.375,
+            "height": 47.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 863.0
+        },
+        {
+          "rectangle": {
+            "name": "Item18",
+            "width": 40.375,
+            "height": 47.0,
+            "rotated": false
+          },
+          "x": 40.375,
+          "y": 863.0
+        }
+      ]
+    },
+    {
+      "width": 98.0,
+      "height": 1523.0,
+      "used_height": 1523.0,
+      "rectangles": [
+        {
+          "rectangle": {
+            "name": "Item8",
+            "width": 64.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 0
+        },
+        {
+          "rectangle": {
+            "name": "Item9",
+            "width": 64.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 70.0
+        },
+        {
+          "rectangle": {
+            "name": "Item21",
+            "width": 64.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 140.0
+        },
+        {
+          "rectangle": {
+            "name": "Item25",
+            "width": 64.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 210.0
+        },
+        {
+          "rectangle": {
+            "name": "Item30",
+            "width": 64.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 280.0
+        },
+        {
+          "rectangle": {
+            "name": "Item31",
+            "width": 64.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 350.0
+        },
+        {
+          "rectangle": {
+            "name": "Item2",
+            "width": 64.5,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 420.0
+        },
+        {
+          "rectangle": {
+            "name": "Item15",
+            "width": 64.375,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 490.0
+        },
+        {
+          "rectangle": {
+            "name": "Item23",
+            "width": 64.375,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 560.0
+        },
+        {
+          "rectangle": {
+            "name": "Item33",
+            "width": 64.375,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 630.0
+        },
+        {
+          "rectangle": {
+            "name": "Item34",
+            "width": 64.375,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 700.0
+        },
+        {
+          "rectangle": {
+            "name": "Item35",
+            "width": 64.375,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 770.0
+        },
+        {
+          "rectangle": {
+            "name": "Item11",
+            "width": 63.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 840.0
+        },
+        {
+          "rectangle": {
+            "name": "Item13",
+            "width": 63.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 910.0
+        },
+        {
+          "rectangle": {
+            "name": "Item19",
+            "width": 63.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 980.0
+        },
+        {
+          "rectangle": {
+            "name": "Item10",
+            "width": 62.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 1050.0
+        },
+        {
+          "rectangle": {
+            "name": "Item12",
+            "width": 62.375,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 1120.0
+        },
+        {
+          "rectangle": {
+            "name": "Item29",
+            "width": 61.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 1190.0
+        },
+        {
+          "rectangle": {
+            "name": "Item39",
+            "width": 70.5,
+            "height": 60.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 1260.0
+        },
+        {
+          "rectangle": {
+            "name": "Item3",
+            "width": 41.125,
+            "height": 86.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 1320.0
+        },
+        {
+          "rectangle": {
+            "name": "Item6",
+            "width": 36.875,
+            "height": 86.0,
+            "rotated": false
+          },
+          "x": 41.125,
+          "y": 1320.0
+        },
+        {
+          "rectangle": {
+            "name": "Item36",
+            "width": 40.375,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 1406.0
+        },
+        {
+          "rectangle": {
+            "name": "Item37",
+            "width": 39.875,
+            "height": 70.0,
+            "rotated": false
+          },
+          "x": 40.375,
+          "y": 1406.0
+        },
+        {
+          "rectangle": {
+            "name": "Item28",
+            "width": 39.375,
+            "height": 47.0,
+            "rotated": false
+          },
+          "x": 0,
+          "y": 1476.0
+        },
+        {
+          "rectangle": {
+            "name": "Item32",
+            "width": 38.875,
+            "height": 47.0,
+            "rotated": false
+          },
+          "x": 39.375,
+          "y": 1476.0
+        }
+      ]
+    }
+  ]
+}

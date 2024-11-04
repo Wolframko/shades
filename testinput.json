@@ -1,0 +1,57 @@
+{
+  "bins": [
+    {
+      "width": 98.0,
+      "height": 1000.0
+    },
+    {
+      "width": 98.0,
+      "height": 2000.0
+    },
+    {
+      "width": 98.0,
+      "height": 3000.0
+    }
+  ],
+  "rectangles": [
+    {"name": "Item1", "width": 65.0, "height": 70.0, "can_rotate": false},
+    {"name": "Item2", "width": 64.5, "height": 70.0, "can_rotate": false},
+    {"name": "Item3", "width": 41.125, "height": 86.0, "can_rotate": false},
+    {"name": "Item4", "width": 75.5, "height": 86.0, "can_rotate": false},
+    {"name": "Item5", "width": 75.5, "height": 86.0, "can_rotate": false},
+    {"name": "Item6", "width": 36.875, "height": 86.0, "can_rotate": false},
+    {"name": "Item7", "width": 64.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item8", "width": 64.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item9", "width": 64.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item10", "width": 62.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item11", "width": 63.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item12", "width": 62.375, "height": 70.0, "can_rotate": false},
+    {"name": "Item13", "width": 63.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item14", "width": 32.875, "height": 86.0, "can_rotate": false},
+    {"name": "Item15", "width": 64.375, "height": 70.0, "can_rotate": false},
+    {"name": "Item16", "width": 64.375, "height": 79.0, "can_rotate": false},
+    {"name": "Item17", "width": 40.375, "height": 47.0, "can_rotate": false},
+    {"name": "Item18", "width": 40.375, "height": 47.0, "can_rotate": false},
+    {"name": "Item19", "width": 63.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item20", "width": 107.125, "height": 72.0, "can_rotate": false},
+    {"name": "Item21", "width": 64.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item22", "width": 76.5, "height": 88.0, "can_rotate": false},
+    {"name": "Item23", "width": 64.375, "height": 70.0, "can_rotate": false},
+    {"name": "Item24", "width": 65.625, "height": 70.0, "can_rotate": false},
+    {"name": "Item25", "width": 64.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item26", "width": 71.375, "height": 79.0, "can_rotate": false},
+    {"name": "Item27", "width": 65.375, "height": 70.0, "can_rotate": false},
+    {"name": "Item28", "width": 39.375, "height": 47.0, "can_rotate": false},
+    {"name": "Item29", "width": 61.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item30", "width": 64.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item31", "width": 64.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item32", "width": 38.875, "height": 47.0, "can_rotate": false},
+    {"name": "Item33", "width": 64.375, "height": 70.0, "can_rotate": false},
+    {"name": "Item34", "width": 64.375, "height": 70.0, "can_rotate": false},
+    {"name": "Item35", "width": 64.375, "height": 70.0, "can_rotate": false},
+    {"name": "Item36", "width": 40.375, "height": 70.0, "can_rotate": false},
+    {"name": "Item37", "width": 39.875, "height": 70.0, "can_rotate": false},
+    {"name": "Item38", "width": 77.25, "height": 86.0, "can_rotate": false},
+    {"name": "Item39", "width": 70.5, "height": 60.0, "can_rotate": false}
+  ]
+}

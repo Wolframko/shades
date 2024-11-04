@@ -1,0 +1,219 @@
+from typing import List, Tuple
+from rectangle import Rectangle
+from bin import Bin
+from utils import rotate_rectangles, pack_rectangles, generate_html
+
+def pack_multiple_bins(rectangles: List[Rectangle], bins: List[Bin]) -> List[Tuple[Bin, List[Tuple[float, float, float, float]], float]]:
+    """
+    Pack rectangles into multiple bins, starting from the smallest bin.
+
+    Args:
+        rectangles (List[Rectangle]): The list of rectangles to pack.
+        bins (List[Bin]): The list of bins to pack rectangles into.
+
+    Returns:
+        List[Tuple[Bin, List[Tuple[float, float, float, float]], float]]:
+        A list of tuples, each containing a packed bin, cut lines, and total height used for that bin.
+    """
+    """
+    Pack rectangles into multiple bins, starting from the smallest bin.
+
+    Args:
+        rectangles (List[Rectangle]): The list of rectangles to pack.
+        bins (List[Bin]): The list of bins to pack rectangles into.
+
+    Returns:
+        List[Tuple[Bin, List[Tuple[float, float, float, float]], float]]:
+        A list of tuples, each containing a packed bin, cut lines, and total height used for that bin.
+    """
+    # Sort bins by area (width * height) in ascending order
+    sorted_bins = sorted(bins, key=lambda b: b.width * b.height)
+    
+    results = []
+    remaining_rectangles = rectangles.copy()
+
+    for bin in sorted_bins:
+        if not remaining_rectangles:
+            break
+
+        # Run the greedy algorithm for the current bin
+        bin_result = run_greedy_algorithm(remaining_rectangles, bin.width, bin.height)
+        packed_bin, cut_lines, total_height = bin_result
+
+        # Update the bin's used height
+        packed_bin.used_height = total_height
+        
+        # Add the results for this bin
+        results.append((packed_bin, cut_lines, total_height))
+        
+        # Update remaining rectangles
+        packed_names = {rect.name for rect, _, _ in packed_bin.rectangles}
+        remaining_rectangles = [rect for rect in remaining_rectangles if rect.name not in packed_names]
+
+    # If there are still remaining rectangles, you might want to handle this case
+    if remaining_rectangles:
+        print(f"Warning: {len(remaining_rectangles)} rectangles could not be packed.")
+
+    return results
+
+def run_greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_height: float) -> Tuple[Bin, List[Tuple[float, float, float, float]], float]:
+    """
+    Run the greedy algorithm for a single bin and return the packed bin, cut lines, and total height.
+
+    Args:
+        rectangles (List[Rectangle]): The list of rectangles to pack.
+        bin_width (float): The width of the bin.
+        bin_height (float): The height of the bin.
+
+    Returns:
+        Tuple[Bin, List[Tuple[float, float, float, float]], float]:
+        A tuple containing the packed bin, cut lines, and total height used.
+    """
+    """
+    Run the greedy algorithm for a single bin and return the packed bin, cut lines, and total height.
+
+    Args:
+        rectangles (List[Rectangle]): The list of rectangles to pack.
+        bin_width (float): The width of the bin.
+        bin_height (float): The height of the bin.
+
+    Returns:
+        Tuple[Bin, List[Tuple[float, float, float, float]], float]:
+        A tuple containing the packed bin, cut lines, and total height used.
+    """
+    # Rotate rectangles if necessary for the current bin
+    rotate_rectangles(rectangles, bin_width)
+    
+    # Run the greedy algorithm for the current bin
+    packed_indices, _ = greedy_algorithm(rectangles, bin_width, bin_height)
+    
+    # Pack the rectangles into the current bin
+    packed_bin, cut_lines, total_height = pack_rectangles(packed_indices, rectangles, bin_width, bin_height)
+    
+    return packed_bin, cut_lines, total_height
+    
+    # Run the greedy algorithm for the current bin
+    packed_indices, _ = greedy_algorithm(rectangles, bin_width, bin_height)
+    
+    # Pack the rectangles into the current bin
+    packed_bin, cut_lines, total_height = pack_rectangles(packed_indices, rectangles, bin_width, bin_height)
+    
+    return packed_bin, cut_lines, total_height
+
+def greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_height: float) -> Tuple[List[int], List[int]]:
+    """
+    Implement a greedy algorithm for rectangle packing, prioritizing larger parts
+    and ensuring cut pieces are placed next to each other.
+
+    Args:
+        rectangles (List[Rectangle]): The list of rectangles to pack.
+        bin_width (float): The width of the bin.
+        bin_height (float): The height of the bin.
+
+    Returns:
+        Tuple[List[int], List[int]]: A tuple containing two lists of indices:
+            1. Indices of packed rectangles
+            2. Indices of remaining (unpacked) rectangles
+    """
+    """
+    Implement a greedy algorithm for rectangle packing, prioritizing larger parts
+    and ensuring cut pieces are placed next to each other.
+
+    Args:
+        rectangles (List[Rectangle]): The list of rectangles to pack.
+        bin_width (float): The width of the bin.
+        bin_height (float): The height of the bin.
+
+    Returns:
+        Tuple[List[int], List[int]]: A tuple containing two lists of indices:
+            1. Indices of packed rectangles
+            2. Indices of remaining (unpacked) rectangles
+    """
+    # Sort rectangles by area (width * height) in descending order
+    sorted_indices = sorted(range(len(rectangles)), key=lambda i: rectangles[i].width * rectangles[i].height, reverse=True)
+    
+    packed_indices = []
+    remaining_indices = set(sorted_indices)
+    current_height = 0
+    current_width = 0
+    row_start_index = 0
+
+    while remaining_indices:
+        best_fit = None
+        best_fit_area = 0
+
+        for idx in remaining_indices:
+            rect = rectangles[idx]
+            if current_width + rect.width <= bin_width and current_height + rect.height <= bin_height:
+                area = rect.width * rect.height
+                if area > best_fit_area:
+                    best_fit = idx
+                    best_fit_area = area
+
+        if best_fit is None:
+            # Start a new row
+            current_row_indices = packed_indices[-row_start_index:]
+            if current_row_indices:
+                row_height = max(rectangles[i].height for i in current_row_indices)
+                if current_height + row_height <= bin_height:
+                    current_width = 0
+                    current_height += row_height
+                    row_start_index = len(packed_indices)
+                else:
+                    # If we can't start a new row, we're done with this bin
+                    break
+            else:
+                # If there are no packed rectangles in the current row, we're done with this bin
+                break
+
+        else:
+            rect = rectangles[best_fit]
+            packed_indices.append(best_fit)
+            remaining_indices.remove(best_fit)
+
+            # Check if this rectangle is a cut piece
+            if ':part1' in rect.name:
+                # Find the corresponding part2
+                part2_idx = next((i for i in remaining_indices if rectangles[i].name == rect.name.replace(':part1', ':part2')), None)
+                if part2_idx is not None and current_height + rect.height + rectangles[part2_idx].height <= bin_height:
+                    # Place part2 on the next row
+                    packed_indices.append(part2_idx)
+                    remaining_indices.remove(part2_idx)
+                    current_width = 0
+                    current_height += rect.height
+                else:
+                    current_width += rect.width
+            else:
+                current_width += rect.width
+
+            if current_width == bin_width:
+                current_width = 0
+                current_height += rect.height
+
+    return packed_indices, list(remaining_indices)
+    
+
+if __name__ == "__main__":
+    # Example usage
+    bins = [
+        Bin(98, 10000),
+        Bin(120, 15000),
+        Bin(150, 20000)
+    ]
+    rectangles = [
+        Rectangle("Item1", 46.0, 93.0, False),
+        Rectangle("Item2", 71.875, 93.0, False),
+        Rectangle("Item3", 81.125, 110.0, False),
+        # Add more rectangles as needed
+    ]
+
+    results = pack_multiple_bins(rectangles, bins)
+
+    for i, (bin, cut_lines, total_height) in enumerate(results):
+        print(f"Bin {i+1}:")
+        print(f"  Width: {bin.width}, Height: {bin.height}")
+        print(f"  Total used height: {total_height}")
+        print("  Packed rectangles:")
+        for rect, x, y in bin.rectangles:
+            print(f"    {rect.name} ({rect.width}x{rect.height}) packed at ({x}, {y})")
+        print()
