@@ -41,7 +41,9 @@ class Rectangle:
         excess_width = self.width - max_width
         if excess_width < 10:
             excess_width = 10
-        new_part = Rectangle(f"{self.name}:part2", excess_width, self.height, self.can_rotate)
+        # Rename the original rectangle to include ':part1'
+        self.name = f"{self.name}:part1"
+        new_part = Rectangle(f"{self.name.replace(':part1', ':part2')}", excess_width, self.height, self.can_rotate)
         self.width = max_width
         return new_part
 

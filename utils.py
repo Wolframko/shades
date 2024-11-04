@@ -30,38 +30,34 @@ def rotate_rectangles(rectangles: List[Rectangle], bin_width: float) -> None:
     rectangles.extend(new_rectangles)
 
 def pack_rectangles(best_individual: List[int], rectangles: List[Rectangle], bin_width: float, bin_height: float) -> Tuple[Bin, List[Tuple[float, float, float, float]], float]:
-    """
-    Pack rectangles according to the best individual found by the algorithm.
-
-    Args:
-        best_individual (List[int]): The best individual (solution) found by the algorithm.
-        rectangles (List[Rectangle]): The list of rectangles to pack.
-        bin_width (float): The width of the bin.
-        bin_height (float): The height of the bin.
-
-    Returns:
-        Tuple[Bin, List[Tuple[float, float, float, float]], float]: 
-        A tuple containing the packed bin, the cut lines, and the total height used.
-    """
     bin = Bin(bin_width, bin_height)
     cut_lines = []
-    x, y, max_height = 0, 0, 0
+    x, y = 0, 0
+    max_height_in_row = 0
+    force_new_line = False
 
-    for gene in best_individual:
-        rect = rectangles[gene]
-        if x + rect.width > bin_width:
-            cut_lines.append((0, y, bin_width, y))
-            x, y = 0, y + max_height
-            max_height = 0
-        
+    for idx in best_individual:
+        rect = rectangles[idx]
+
+        if force_new_line or x + rect.width > bin_width:
+            # Start new row
+            x = 0
+            y += max_height_in_row
+            max_height_in_row = 0
+            force_new_line = False
+
+        if y + rect.height > bin_height:
+            print(f"Cannot fit rectangle {rect.name} in the bin.")
+            continue  # Skip if the rectangle cannot fit in the bin
+
         bin.add_rectangle(rect, x, y)
-        cut_lines.append((x, y, x, y + rect.height))
         x += rect.width
-        max_height = max(max_height, rect.height)
+        max_height_in_row = max(max_height_in_row, rect.height)
 
-    cut_lines.append((0, y + max_height, bin_width, y + max_height))
-    total_height = y + max_height
-    
+        if ':part1' in rect.name:
+            force_new_line = True
+
+    total_height = y + max_height_in_row
     return bin, cut_lines, total_height
 
 def generate_html(bins: List[Bin], cut_lines: List[List[Tuple[float, float, float, float]]]) -> str:

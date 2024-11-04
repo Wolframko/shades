@@ -69,28 +69,8 @@ def run_greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_heig
         Tuple[Bin, List[Tuple[float, float, float, float]], float]:
         A tuple containing the packed bin, cut lines, and total height used.
     """
-    """
-    Run the greedy algorithm for a single bin and return the packed bin, cut lines, and total height.
-
-    Args:
-        rectangles (List[Rectangle]): The list of rectangles to pack.
-        bin_width (float): The width of the bin.
-        bin_height (float): The height of the bin.
-
-    Returns:
-        Tuple[Bin, List[Tuple[float, float, float, float]], float]:
-        A tuple containing the packed bin, cut lines, and total height used.
-    """
     # Rotate rectangles if necessary for the current bin
     rotate_rectangles(rectangles, bin_width)
-    
-    # Run the greedy algorithm for the current bin
-    packed_indices, _ = greedy_algorithm(rectangles, bin_width, bin_height)
-    
-    # Pack the rectangles into the current bin
-    packed_bin, cut_lines, total_height = pack_rectangles(packed_indices, rectangles, bin_width, bin_height)
-    
-    return packed_bin, cut_lines, total_height
     
     # Run the greedy algorithm for the current bin
     packed_indices, _ = greedy_algorithm(rectangles, bin_width, bin_height)
@@ -134,61 +114,69 @@ def greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_height: 
     
     packed_indices = []
     remaining_indices = set(sorted_indices)
-    current_height = 0
     current_width = 0
-    row_start_index = 0
+    current_height = 0
+    max_row_height = 0
 
     while remaining_indices:
         best_fit = None
         best_fit_area = 0
 
+        # Try to find a rectangle that fits in current row
         for idx in remaining_indices:
             rect = rectangles[idx]
-            if current_width + rect.width <= bin_width and current_height + rect.height <= bin_height:
+            if rect.width <= bin_width - current_width and rect.height <= bin_height - current_height:
                 area = rect.width * rect.height
                 if area > best_fit_area:
                     best_fit = idx
                     best_fit_area = area
 
         if best_fit is None:
-            # Start a new row
-            current_row_indices = packed_indices[-row_start_index:]
-            if current_row_indices:
-                row_height = max(rectangles[i].height for i in current_row_indices)
-                if current_height + row_height <= bin_height:
-                    current_width = 0
-                    current_height += row_height
-                    row_start_index = len(packed_indices)
-                else:
-                    # If we can't start a new row, we're done with this bin
-                    break
-            else:
-                # If there are no packed rectangles in the current row, we're done with this bin
+            # If we can't find any rectangle that fits in current row
+            if current_width == 0:  # If we're at the start of a row and still can't fit anything
+                # No more rectangles can fit in the remaining height
                 break
+            
+            # Start a new row
+            current_width = 0
+            current_height += max_row_height
+            max_row_height = 0
 
-        else:
-            rect = rectangles[best_fit]
-            packed_indices.append(best_fit)
-            remaining_indices.remove(best_fit)
+            # Check if bin height is exceeded
+            if current_height >= bin_height:
+                break  # Cannot fit more rectangles
+            
+            continue
 
-            # Check if this rectangle is a cut piece
-            if ':part1' in rect.name:
-                # Find the corresponding part2
-                part2_idx = next((i for i in remaining_indices if rectangles[i].name == rect.name.replace(':part1', ':part2')), None)
-                if part2_idx is not None and current_height + rect.height + rectangles[part2_idx].height <= bin_height:
-                    # Place part2 on the next row
+        rect = rectangles[best_fit]
+        packed_indices.append(best_fit)
+        remaining_indices.remove(best_fit)
+
+        # Update current_width and max_row_height
+        current_width += rect.width
+        max_row_height = max(max_row_height, rect.height)
+
+        # Handle split parts
+        if ':part1' in rect.name:
+            # Force new line after ':part1'
+            current_width = 0
+            current_height += max_row_height
+            max_row_height = 0
+
+            # Find and pack ':part2'
+            part2_name = rect.name.replace(':part1', ':part2')
+            part2_idx = next((i for i in remaining_indices if rectangles[i].name == part2_name), None)
+            if part2_idx is not None:
+                rect_part2 = rectangles[part2_idx]
+                if rect_part2.width <= bin_width and rect_part2.height <= bin_height - current_height:
                     packed_indices.append(part2_idx)
                     remaining_indices.remove(part2_idx)
-                    current_width = 0
-                    current_height += rect.height
+                    current_width += rect_part2.width
+                    max_row_height = max(max_row_height, rect_part2.height)
                 else:
-                    current_width += rect.width
+                    print(f"Cannot fit {rect_part2.name} in the bin after splitting.")
             else:
-                current_width += rect.width
-
-            if current_width == bin_width:
-                current_width = 0
-                current_height += rect.height
+                print(f"Corresponding part2 for {rect.name} not found.")
 
     return packed_indices, list(remaining_indices)
     

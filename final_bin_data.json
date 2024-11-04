@@ -2,12 +2,12 @@
   "bins": [
     {
       "width": 95.0,
-      "height": 200000.0,
+      "height": 300000.0,
       "used_height": 31534.625,
       "rectangles": [
         {
           "rectangle": {
-            "name": "Rect_5",
+            "name": "Rect_5:part1",
             "width": 95.0,
             "height": 97.5,
             "rotated": true
@@ -17,13 +17,33 @@
         },
         {
           "rectangle": {
+            "name": "Rect_5:part2",
+            "width": 10,
+            "height": 97.5,
+            "rotated": true
+          },
+          "x": 0,
+          "y": 97.5
+        },
+        {
+          "rectangle": {
+            "name": "Rect_106",
+            "width": 84.625,
+            "height": 99.0,
+            "rotated": false
+          },
+          "x": 10,
+          "y": 97.5
+        },
+        {
+          "rectangle": {
             "name": "Rect_105",
             "width": 90.875,
             "height": 99.0,
             "rotated": false
           },
           "x": 0,
-          "y": 97.5
+          "y": 196.5
         },
         {
           "rectangle": {
@@ -33,7 +53,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 196.5
+          "y": 295.5
         },
         {
           "rectangle": {
@@ -43,7 +63,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 290.25
+          "y": 389.25
         },
         {
           "rectangle": {
@@ -53,7 +73,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 384.0
+          "y": 483.0
         },
         {
           "rectangle": {
@@ -63,7 +83,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 477.75
+          "y": 576.75
         },
         {
           "rectangle": {
@@ -73,7 +93,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 571.25
+          "y": 670.25
         },
         {
           "rectangle": {
@@ -83,7 +103,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 662.25
+          "y": 761.25
         },
         {
           "rectangle": {
@@ -93,7 +113,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 755.0
+          "y": 854.0
         },
         {
           "rectangle": {
@@ -103,7 +123,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 846.0
+          "y": 945.0
         },
         {
           "rectangle": {
@@ -113,7 +133,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 937.0
+          "y": 1036.0
         },
         {
           "rectangle": {
@@ -123,7 +143,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 1028.0
+          "y": 1127.0
         },
         {
           "rectangle": {
@@ -133,7 +153,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 1119.0
+          "y": 1218.0
         },
         {
           "rectangle": {
@@ -143,7 +163,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 1210.0
+          "y": 1309.0
         },
         {
           "rectangle": {
@@ -153,7 +173,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 1301.0
+          "y": 1400.0
         },
         {
           "rectangle": {
@@ -163,7 +183,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 1392.0
+          "y": 1491.0
         },
         {
           "rectangle": {
@@ -173,7 +193,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 1483.0
+          "y": 1582.0
         },
         {
           "rectangle": {
@@ -183,7 +203,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 1574.0
+          "y": 1673.0
         },
         {
           "rectangle": {
@@ -193,7 +213,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 1665.0
+          "y": 1764.0
         },
         {
           "rectangle": {
@@ -203,7 +223,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 1757.25
+          "y": 1856.25
         },
         {
           "rectangle": {
@@ -213,27 +233,7 @@
             "rotated": false
           },
           "x": 0,
-          "y": 1849.5
-        },
-        {
-          "rectangle": {
-            "name": "Rect_106",
-            "width": 84.625,
-            "height": 99.0,
-            "rotated": false
-          },
-          "x": 0,
-          "y": 1941.25
-        },
-        {
-          "rectangle": {
-            "name": "Rect_5:part2",
-            "width": 10,
-            "height": 97.5,
-            "rotated": true
-          },
-          "x": 84.625,
-          "y": 1941.25
+          "y": 1948.5
         },
         {
           "rectangle": {
