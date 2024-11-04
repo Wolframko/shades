@@ -5,8 +5,11 @@ from bin import Bin
 
 def rotate_rectangles(rectangles: List[Rectangle], bin_width: float) -> None:
     """
-    Rotate rectangles if their width is greater than bin_width and they can be rotated.
-    If a rectangle is still too wide after rotation and can rotate, it is split.
+    Rotate rectangles based on their can_rotate value:
+    - If can_rotate == 0: Do not rotate the rectangle.
+    - If can_rotate == 1: Rotate the rectangle if its width > bin_width.
+    - If can_rotate == 2: Must rotate the rectangle, regardless of its width.
+    If after rotation, the rectangle's width > bin_width and can be split, split it.
 
     Args:
         rectangles (List[Rectangle]): The list of rectangles to process.
@@ -15,17 +18,31 @@ def rotate_rectangles(rectangles: List[Rectangle], bin_width: float) -> None:
     new_rectangles = []
     
     for rect in rectangles:
-        if rect.width > bin_width:
-            if rect.can_rotate:
+        if rect.can_rotate == 0:
+            # Do not rotate
+            if rect.width > bin_width:
+                print(f"Rectangle {rect.name} is too wide for the bin and cannot be rotated.")
+        elif rect.can_rotate == 1:
+            # Rotate if width > bin_width
+            if rect.width > bin_width:
                 rect.rotate()
                 if rect.width > bin_width:
                     print(f"Rectangle {rect.name} is too wide even after rotation. Splitting it.")
                     new_part = rect.split(bin_width)
                     if new_part:
-                        new_part.is_rotated = True
+                        new_part.is_rotated = rect.is_rotated
                         new_rectangles.append(new_part)
-            else:
-                print(f"Rectangle {rect.name} is too wide for the bin and cannot be rotated.")
+        elif rect.can_rotate == 2:
+            # Must rotate without checking bin width
+            rect.rotate()
+            if rect.width > bin_width:
+                print(f"Rectangle {rect.name} is too wide even after forced rotation. Splitting it.")
+                new_part = rect.split(bin_width)
+                if new_part:
+                    new_part.is_rotated = rect.is_rotated
+                    new_rectangles.append(new_part)
+        else:
+            print(f"Invalid can_rotate value {rect.can_rotate} for rectangle {rect.name}")
     
     rectangles.extend(new_rectangles)
 

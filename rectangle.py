@@ -3,7 +3,7 @@ class Rectangle:
     Represents a rectangle with properties such as name, width, height, and rotation capabilities.
     """
     __slots__ = ['name', 'width', 'height', 'can_rotate', 'is_rotated']
-    def __init__(self, name: str, width: float, height: float, can_rotate: bool):
+    def __init__(self, name: str, width: float, height: float, can_rotate: int):
         """
         Initialize a Rectangle object.
 
@@ -11,7 +11,7 @@ class Rectangle:
             name (str): The name of the rectangle.
             width (float): The width of the rectangle.
             height (float): The height of the rectangle.
-            can_rotate (bool): Whether the rectangle can be rotated.
+            can_rotate (int): Rotation behavior (0: cannot rotate, 1: can rotate if needed, 2: must rotate).
         """
         self.name = name
         self.width = width
@@ -58,5 +58,6 @@ class Rectangle:
             "name": self.name,
             "width": self.width,
             "height": self.height,
-            "rotated": self.is_rotated
+            "rotated": self.is_rotated,
+            "can_rotate": self.can_rotate  # Ensure can_rotate is included when saving
         }

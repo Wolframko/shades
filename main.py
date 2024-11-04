@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
                              QLabel, QLineEdit, QCheckBox, QPushButton, QTableWidget, QTableWidgetItem,
-                             QGroupBox, QFileDialog, QTextEdit, QScrollArea, QListWidget, QMessageBox)
+                             QGroupBox, QFileDialog, QTextEdit, QScrollArea, QListWidget, QMessageBox, QComboBox)
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtCore import QUrl
 from PyQt6.QtGui import QGuiApplication
@@ -86,8 +86,12 @@ class RectanglePackingGUI(QMainWindow):
         height_layout.addWidget(self.height_entry)
         rect_layout.addLayout(height_layout)
 
-        self.can_rotate_var = QCheckBox("Can Rotate")
-        rect_layout.addWidget(self.can_rotate_var)
+        can_rotate_layout = QHBoxLayout()
+        can_rotate_layout.addWidget(QLabel("Can Rotate:"))
+        self.can_rotate_var = QComboBox()
+        self.can_rotate_var.addItems(["0", "1", "2"])
+        can_rotate_layout.addWidget(self.can_rotate_var)
+        rect_layout.addLayout(can_rotate_layout)
 
         add_button = QPushButton("Add Rectangle")
         add_button.clicked.connect(self.add_rectangle)
@@ -198,7 +202,7 @@ class RectanglePackingGUI(QMainWindow):
                     width = row[0]
                     height = row[1]
                     # Check if third column exists and use it for rotation
-                    can_rotate = bool(row[2]) if df.shape[1] > 2 else False
+                    can_rotate = int(row[2]) if df.shape[1] > 2 else 0
                     self.rectangles.append(Rectangle(f"Rect_{i+1}", width, height, can_rotate))
             else:
                 print("Unsupported file format")
@@ -218,7 +222,7 @@ class RectanglePackingGUI(QMainWindow):
             name = self.rect_table.item(row, 0).text()
             width = float(self.rect_table.item(row, 1).text())
             height = float(self.rect_table.item(row, 2).text())
-            can_rotate = self.rect_table.cellWidget(row, 3).isChecked()
+            can_rotate = int(self.rect_table.item(row, 3).text())
             rectangle = Rectangle(name, width, height, can_rotate)
             self.rectangles.append(rectangle)
 
@@ -250,7 +254,7 @@ class RectanglePackingGUI(QMainWindow):
             self.results_text.append("  Packed rectangles:")
             for rect, x, y in bin.rectangles:
                 rotation_status = "rotated" if rect.is_rotated else "not rotated"
-                self.results_text.append(f"    {rect.name} ({rect.width}x{rect.height}) packed at ({x}, {y}) - {rotation_status}")
+                self.results_text.append(f"    {rect.name} ({rect.width}x{rect.height}) packed at ({x}, {y}) - {rotation_status}, Can Rotate: {rect.can_rotate}")
             self.results_text.append("")
 
         # Generate HTML and display in WebView
@@ -274,7 +278,7 @@ class RectanglePackingGUI(QMainWindow):
             print("Invalid input for width or height")
             return
 
-        can_rotate = self.can_rotate_var.isChecked()
+        can_rotate = int(self.can_rotate_var.currentText())
 
         rectangle = Rectangle(name, width, height, can_rotate)
         self.rectangles.append(rectangle)
@@ -287,30 +291,8 @@ class RectanglePackingGUI(QMainWindow):
             self.rect_table.setItem(i, 0, QTableWidgetItem(rect.name))
             self.rect_table.setItem(i, 1, QTableWidgetItem(str(rect.width)))
             self.rect_table.setItem(i, 2, QTableWidgetItem(str(rect.height)))
-            
-            # Create a QCheckBox for the "Can Rotate" column
-            can_rotate_checkbox = QCheckBox()
-            can_rotate_checkbox.setChecked(rect.can_rotate)
-            can_rotate_checkbox.stateChanged.connect(lambda state, row=i: self.on_can_rotate_changed(row, state))
-            self.rect_table.setCellWidget(i, 3, can_rotate_checkbox)
-
-    def on_can_rotate_changed(self, row, state):
-        self.rectangles[row].can_rotate = bool(state)
-
-    def clear_rectangle_inputs(self):
-        self.name_entry.clear()
-        self.width_entry.clear()
-        self.height_entry.clear()
-        self.can_rotate_var.setChecked(False)
-
-    def on_select_rectangle(self):
-        selected_items = self.rect_table.selectedItems()
-        if selected_items:
-            row = self.rect_table.row(selected_items[0])
-            self.name_entry.setText(self.rect_table.item(row, 0).text())
-            self.width_entry.setText(self.rect_table.item(row, 1).text())
-            self.height_entry.setText(self.rect_table.item(row, 2).text())
-            self.can_rotate_var.setChecked(self.rect_table.cellWidget(row, 3).isChecked())
+            # Display can_rotate as a string value
+            self.rect_table.setItem(i, 3, QTableWidgetItem(str(rect.can_rotate)))
 
     def on_cell_changed(self, row, column):
         item = self.rect_table.item(row, column)
@@ -322,6 +304,26 @@ class RectanglePackingGUI(QMainWindow):
                 rect.width = float(item.text())
             elif column == 2:  # Height
                 rect.height = float(item.text())
+            elif column == 3:  # Can Rotate
+                try:
+                    can_rotate_value = int(item.text())
+                    if can_rotate_value in [0, 1, 2]:
+                        rect.can_rotate = can_rotate_value
+                    else:
+                        raise ValueError
+                except ValueError:
+                    QMessageBox.warning(self, "Invalid Input", "Can Rotate must be 0, 1, or 2.")
+                    item.setText(str(rect.can_rotate))
+
+    def on_select_rectangle(self):
+        selected_items = self.rect_table.selectedItems()
+        if selected_items:
+            row = self.rect_table.row(selected_items[0])
+            self.name_entry.setText(self.rect_table.item(row, 0).text())
+            self.width_entry.setText(self.rect_table.item(row, 1).text())
+            self.height_entry.setText(self.rect_table.item(row, 2).text())
+            can_rotate_value = int(self.rect_table.item(row, 3).text())
+            self.can_rotate_var.setCurrentText(str(can_rotate_value))
 
     def remove_rectangle(self):
         selected_items = self.rect_table.selectedItems()
