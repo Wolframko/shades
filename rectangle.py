@@ -39,6 +39,8 @@ class Rectangle:
         if self.width <= max_width:
             return None
         excess_width = self.width - max_width
+        if excess_width < 10:
+            excess_width = 10
         new_part = Rectangle(f"{self.name}:part2", excess_width, self.height, self.can_rotate)
         self.width = max_width
         return new_part

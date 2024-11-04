@@ -191,7 +191,15 @@ class RectanglePackingGUI(QMainWindow):
                 if df.shape[1] < 2:
                     print("Excel file must have at least two columns: width and height")
                     return
-                self.rectangles = [Rectangle(f"Rect_{i+1}", row[0], row[1], False) for i, row in df.iterrows()]
+                
+                # Parse rectangles with rotation if third column exists
+                self.rectangles = []
+                for i, row in df.iterrows():
+                    width = row[0]
+                    height = row[1]
+                    # Check if third column exists and use it for rotation
+                    can_rotate = bool(row[2]) if df.shape[1] > 2 else False
+                    self.rectangles.append(Rectangle(f"Rect_{i+1}", width, height, can_rotate))
             else:
                 print("Unsupported file format")
                 return

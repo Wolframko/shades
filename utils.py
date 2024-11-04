@@ -17,19 +17,15 @@ def rotate_rectangles(rectangles: List[Rectangle], bin_width: float) -> None:
     for rect in rectangles:
         if rect.width > bin_width:
             if rect.can_rotate:
-                if rect.height <= bin_width:
-                    rect.rotate()
-                elif rect.width > bin_width and rect.height > bin_width:
-                    print(f"Rectangle {rect.name} is too wide and tall for the bin. Splitting it.")
-                    rect.rotate()
+                rect.rotate()
+                if rect.width > bin_width:
+                    print(f"Rectangle {rect.name} is too wide even after rotation. Splitting it.")
                     new_part = rect.split(bin_width)
-                    new_part.is_rotated = True
                     if new_part:
-                        if new_part.width < 10:
-                            new_part.width = 10
+                        new_part.is_rotated = True
                         new_rectangles.append(new_part)
             else:
-                print(f"Rectangle {rect.name} is too wide for the bin and cannot be rotated or split.")
+                print(f"Rectangle {rect.name} is too wide for the bin and cannot be rotated.")
     
     rectangles.extend(new_rectangles)
 
