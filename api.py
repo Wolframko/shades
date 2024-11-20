@@ -14,7 +14,7 @@ class RectangleInput(BaseModel):
     name: str
     width: float
     height: float
-    can_rotate: bool
+    can_rotate: int
 
 class BinInput(BaseModel):
     width: float
@@ -78,7 +78,7 @@ async def pack_rectangles_html(input_data: PackingInput):
 
 @app.get("/")
 async def root():
-    return {"message": "Rectangle Packing API", "endpoints": ["/pack/json", "/pack/html", "/pack/pdf"]}
+    return {"message": "Rectangle Packing API", "endpoints": ["/pack/json", "/pack/html"]}
 
 if __name__ == "__main__":
     import uvicorn
