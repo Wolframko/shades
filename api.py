@@ -18,7 +18,6 @@ class RectangleInput(BaseModel):
 
 class BinInput(BaseModel):
     width: float
-    height: float
 
 class PackingInput(BaseModel):
     rectangles: List[RectangleInput]
@@ -48,7 +47,6 @@ async def pack_rectangles_json(input_data: PackingInput):
         "packed_bins": [
             {
                 "width": bin.width,
-                "height": bin.height,
                 "used_height": bin.used_height,
                 "rectangles": [
                     {

@@ -2,9 +2,8 @@ from typing import List, Tuple
 from rectangle import Rectangle
 
 class Bin:
-    def __init__(self, width: float, height: float):
+    def __init__(self, width: float):
         self.width = width
-        self.height = height
         self.used_height: float = 0  # Track actual used height
         self.rectangles: List[Tuple[Rectangle, float, float]] = []
 
@@ -22,7 +21,6 @@ class Bin:
     def to_dict(self):
         return {
             "width": self.width,
-            "height": self.height,
             "used_height": self.used_height,
             "rectangles": [
                 {

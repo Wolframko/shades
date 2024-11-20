@@ -15,19 +15,8 @@ def pack_multiple_bins(rectangles: List[Rectangle], bins: List[Bin]) -> List[Tup
         List[Tuple[Bin, List[Tuple[float, float, float, float]], float]]:
         A list of tuples, each containing a packed bin, cut lines, and total height used for that bin.
     """
-    """
-    Pack rectangles into multiple bins, starting from the smallest bin.
-
-    Args:
-        rectangles (List[Rectangle]): The list of rectangles to pack.
-        bins (List[Bin]): The list of bins to pack rectangles into.
-
-    Returns:
-        List[Tuple[Bin, List[Tuple[float, float, float, float]], float]]:
-        A list of tuples, each containing a packed bin, cut lines, and total height used for that bin.
-    """
-    # Sort bins by area (width * height) in ascending order
-    sorted_bins = sorted(bins, key=lambda b: b.width * b.height)
+    # Sort bins by width in ascending order (since height is no longer a factor)
+    sorted_bins = sorted(bins, key=lambda b: b.width)
     
     results = []
     remaining_rectangles = rectangles.copy()
@@ -37,7 +26,7 @@ def pack_multiple_bins(rectangles: List[Rectangle], bins: List[Bin]) -> List[Tup
             break
 
         # Run the greedy algorithm for the current bin
-        bin_result = run_greedy_algorithm(remaining_rectangles, bin.width, bin.height)
+        bin_result = run_greedy_algorithm(remaining_rectangles, bin.width)
         packed_bin, cut_lines, total_height = bin_result
 
         # Update the bin's used height
@@ -56,14 +45,13 @@ def pack_multiple_bins(rectangles: List[Rectangle], bins: List[Bin]) -> List[Tup
 
     return results
 
-def run_greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_height: float) -> Tuple[Bin, List[Tuple[float, float, float, float]], float]:
+def run_greedy_algorithm(rectangles: List[Rectangle], bin_width: float) -> Tuple[Bin, List[Tuple[float, float, float, float]], float]:
     """
     Run the greedy algorithm for a single bin and return the packed bin, cut lines, and total height.
 
     Args:
         rectangles (List[Rectangle]): The list of rectangles to pack.
         bin_width (float): The width of the bin.
-        bin_height (float): The height of the bin.
 
     Returns:
         Tuple[Bin, List[Tuple[float, float, float, float]], float]:
@@ -73,14 +61,14 @@ def run_greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_heig
     rotate_rectangles(rectangles, bin_width)
     
     # Run the greedy algorithm for the current bin
-    packed_indices, _ = greedy_algorithm(rectangles, bin_width, bin_height)
+    packed_indices, _ = greedy_algorithm(rectangles, bin_width)
     
     # Pack the rectangles into the current bin
-    packed_bin, cut_lines, total_height = pack_rectangles(packed_indices, rectangles, bin_width, bin_height)
+    packed_bin, cut_lines, total_height = pack_rectangles(packed_indices, rectangles, bin_width)
     
     return packed_bin, cut_lines, total_height
 
-def greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_height: float) -> Tuple[List[int], List[int]]:
+def greedy_algorithm(rectangles: List[Rectangle], bin_width: float) -> Tuple[List[int], List[int]]:
     """
     Implement a greedy algorithm for rectangle packing, prioritizing larger parts
     and ensuring cut pieces are placed next to each other.
@@ -88,21 +76,6 @@ def greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_height: 
     Args:
         rectangles (List[Rectangle]): The list of rectangles to pack.
         bin_width (float): The width of the bin.
-        bin_height (float): The height of the bin.
-
-    Returns:
-        Tuple[List[int], List[int]]: A tuple containing two lists of indices:
-            1. Indices of packed rectangles
-            2. Indices of remaining (unpacked) rectangles
-    """
-    """
-    Implement a greedy algorithm for rectangle packing, prioritizing larger parts
-    and ensuring cut pieces are placed next to each other.
-
-    Args:
-        rectangles (List[Rectangle]): The list of rectangles to pack.
-        bin_width (float): The width of the bin.
-        bin_height (float): The height of the bin.
 
     Returns:
         Tuple[List[int], List[int]]: A tuple containing two lists of indices:
@@ -125,7 +98,7 @@ def greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_height: 
         # Try to find a rectangle that fits in current row
         for idx in remaining_indices:
             rect = rectangles[idx]
-            if rect.width <= bin_width - current_width and rect.height <= bin_height - current_height:
+            if rect.width <= bin_width - current_width:
                 area = rect.width * rect.height
                 if area > best_fit_area:
                     best_fit = idx
@@ -141,11 +114,6 @@ def greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_height: 
             current_width = 0
             current_height += max_row_height
             max_row_height = 0
-
-            # Check if bin height is exceeded
-            if current_height >= bin_height:
-                break  # Cannot fit more rectangles
-            
             continue
 
         rect = rectangles[best_fit]
@@ -168,7 +136,7 @@ def greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_height: 
             part2_idx = next((i for i in remaining_indices if rectangles[i].name == part2_name), None)
             if part2_idx is not None:
                 rect_part2 = rectangles[part2_idx]
-                if rect_part2.width <= bin_width and rect_part2.height <= bin_height - current_height:
+                if rect_part2.width <= bin_width:
                     packed_indices.append(part2_idx)
                     remaining_indices.remove(part2_idx)
                     current_width += rect_part2.width
@@ -184,22 +152,21 @@ def greedy_algorithm(rectangles: List[Rectangle], bin_width: float, bin_height: 
 if __name__ == "__main__":
     # Example usage
     bins = [
-        Bin(98, 10000),
-        Bin(120, 15000),
-        Bin(150, 20000)
+        Bin(98),
+        Bin(120),
+        Bin(150)
     ]
     rectangles = [
         Rectangle("Item1", 46.0, 93.0, False),
         Rectangle("Item2", 71.875, 93.0, False),
         Rectangle("Item3", 81.125, 110.0, False),
-        # Add more rectangles as needed
     ]
 
     results = pack_multiple_bins(rectangles, bins)
 
     for i, (bin, cut_lines, total_height) in enumerate(results):
         print(f"Bin {i+1}:")
-        print(f"  Width: {bin.width}, Height: {bin.height}")
+        print(f"  Width: {bin.width}")
         print(f"  Total used height: {total_height}")
         print("  Packed rectangles:")
         for rect, x, y in bin.rectangles:

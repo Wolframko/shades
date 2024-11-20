@@ -46,8 +46,8 @@ def rotate_rectangles(rectangles: List[Rectangle], bin_width: float) -> None:
     
     rectangles.extend(new_rectangles)
 
-def pack_rectangles(best_individual: List[int], rectangles: List[Rectangle], bin_width: float, bin_height: float) -> Tuple[Bin, List[Tuple[float, float, float, float]], float]:
-    bin = Bin(bin_width, bin_height)
+def pack_rectangles(best_individual: List[int], rectangles: List[Rectangle], bin_width: float) -> Tuple[Bin, List[Tuple[float, float, float, float]], float]:
+    bin = Bin(bin_width)
     cut_lines = []
     x, y = 0, 0
     max_height_in_row = 0
@@ -62,10 +62,6 @@ def pack_rectangles(best_individual: List[int], rectangles: List[Rectangle], bin
             y += max_height_in_row
             max_height_in_row = 0
             force_new_line = False
-
-        if y + rect.height > bin_height:
-            print(f"Cannot fit rectangle {rect.name} in the bin.")
-            continue  # Skip if the rectangle cannot fit in the bin
 
         bin.add_rectangle(rect, x, y)
         x += rect.width
@@ -125,7 +121,7 @@ def generate_html(bins: List[Bin], cut_lines: List[List[Tuple[float, float, floa
             
             const binLabel = document.createElement('div');
             binLabel.className = 'bin-label';
-            binLabel.textContent = `Bin ${{index + 1}} (${{bin.width}} x ${{bin.height}}) - Used Height: ${{bin.used_height}}`;
+            binLabel.textContent = `Bin ${{index + 1}} (Width: ${{bin.width}}) - Used Height: ${{bin.used_height}}`;
             container.appendChild(binLabel);
 
             bin.rectangles.forEach(({{"rectangle": rect, x, y}}) => {{
@@ -163,7 +159,6 @@ def save_bins_to_json(bins: List[Bin], filename: str) -> None:
         "bins": [
             {
                 "width": bin.width,
-                "height": bin.height,
                 "used_height": bin.used_height,
                 "rectangles": [
                     {

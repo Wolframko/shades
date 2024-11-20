@@ -45,12 +45,6 @@ class RectanglePackingGUI(QMainWindow):
         bin_width_layout.addWidget(self.bin_width_entry)
         bin_layout.addLayout(bin_width_layout)
 
-        bin_height_layout = QHBoxLayout()
-        bin_height_layout.addWidget(QLabel("Bin Height:"))
-        self.bin_height_entry = QLineEdit()
-        bin_height_layout.addWidget(self.bin_height_entry)
-        bin_layout.addLayout(bin_height_layout)
-
         add_bin_button = QPushButton("Add Bin")
         add_bin_button.clicked.connect(self.add_bin)
         bin_layout.addWidget(add_bin_button)
@@ -147,12 +141,11 @@ class RectanglePackingGUI(QMainWindow):
     def add_bin(self):
         try:
             width = float(self.bin_width_entry.text())
-            height = float(self.bin_height_entry.text())
         except ValueError:
-            print("Invalid input for bin dimensions")
+            print("Invalid input for bin width")
             return
 
-        bin = Bin(width, height)
+        bin = Bin(width)
         self.bins.append(bin)
         self.update_bin_list()
         self.clear_bin_inputs()
@@ -160,11 +153,10 @@ class RectanglePackingGUI(QMainWindow):
     def update_bin_list(self):
         self.bin_list.clear()
         for bin in self.bins:
-            self.bin_list.addItem(f"Bin: {bin.width} x {bin.height}")
+            self.bin_list.addItem(f"Bin: {bin.width}")
 
     def clear_bin_inputs(self):
         self.bin_width_entry.clear()
-        self.bin_height_entry.clear()
 
     def remove_bin(self):
         current_row = self.bin_list.currentRow()
@@ -176,7 +168,7 @@ class RectanglePackingGUI(QMainWindow):
         filename, _ = QFileDialog.getSaveFileName(self, "Save Data", "", "JSON Files (*.json)")
         if filename:
             data = {
-                "bins": [{"width": b.width, "height": b.height} for b in self.bins],
+                "bins": [{"width": b.width} for b in self.bins],
                 "rectangles": [{"name": r.name, "width": r.width, "height": r.height, "can_rotate": r.can_rotate} for r in self.rectangles]
             }
             with open(filename, "w") as f:
@@ -188,7 +180,7 @@ class RectanglePackingGUI(QMainWindow):
             if filename.endswith(('.json')):
                 with open(filename, "r") as f:
                     data = json.load(f)
-                self.bins = [Bin(b["width"], b["height"]) for b in data["bins"]]
+                self.bins = [Bin(b["width"]) for b in data["bins"]]
                 self.rectangles = [Rectangle(**r) for r in data["rectangles"]]
             elif filename.endswith(('.xlsx', '.xls')):
                 df = pd.read_excel(filename, header=None)
@@ -249,7 +241,7 @@ class RectanglePackingGUI(QMainWindow):
         self.results_text.clear()
         for i, (bin, cut_lines, total_height) in enumerate(results):
             self.results_text.append(f"Bin {i+1}:")
-            self.results_text.append(f"  Width: {bin.width}, Height: {bin.height}")
+            self.results_text.append(f"  Width: {bin.width}")
             self.results_text.append(f"  Total used height: {total_height}")
             self.results_text.append("  Packed rectangles:")
             for rect, x, y in bin.rectangles:
