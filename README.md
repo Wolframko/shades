@@ -44,7 +44,7 @@ This API allows you to pack rectangles into bins using a greedy algorithm. It pr
         "name": "string",
         "width": "float",
         "height": "float",
-        "can_rotate": "bool"
+        "can_rotate": "int"  // 0, 1, 2
       }
     ],
     "bins": [
@@ -76,7 +76,8 @@ This API allows you to pack rectangles into bins using a greedy algorithm. It pr
           }
         ]
       }
-    ]
+    ],
+    "warnings": ["string"]  // Names of rectangles that couldn't be packed
   }
   ```
 
@@ -84,7 +85,7 @@ This API allows you to pack rectangles into bins using a greedy algorithm. It pr
 - **URL:** `/pack/html`
 - **Method:** `POST`
 - **Request Body:** Same as `/pack/json`
-- **Response:** HTML visualization of the packing solution
+- **Response:** HTML visualization of the packing solution with cut lines
 
 ## Bin Features
 
@@ -96,29 +97,22 @@ Each bin can be assigned:
 Example request with custom bin identification:
 ```json
 {
-  "rectangles": [...],
+  "rectangles": [
+    {
+      "name": "rect1",
+      "width": 100,
+      "height": 50,
+      "can_rotate": 1
+    }
+  ],
   "bins": [
     {
-      "width": 100,
-      "name": "Custom Bin A",
+      "width": 200,
+      "name": "Custom Bin",
       "id": 42
-    },
-    {
-      "width": 150  // Will get auto-generated ID and name
     }
   ]
 }
-```
-
-### 4. Root
-- **URL:** `/`
-- **Method:** `GET`
-- **Response:**
-  ```json
-  {
-    "message": "Rectangle Packing API",
-    "endpoints": ["/pack/json", "/pack/html"]
-  }
 ```
 
 ## Project Structure
