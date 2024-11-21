@@ -46,8 +46,20 @@ def rotate_rectangles(rectangles: List[Rectangle], bin_width: float) -> None:
     
     rectangles.extend(new_rectangles)
 
-def pack_rectangles(best_individual: List[int], rectangles: List[Rectangle], bin_width: float) -> Tuple[Bin, List[Tuple[float, float, float, float]], float]:
-    bin = Bin(bin_width)
+def pack_rectangles(best_individual: List[int], rectangles: List[Rectangle], bin: Bin) -> Tuple[Bin, List[Tuple[float, float, float, float]], float]:
+    """Pack rectangles into a bin using the given sequence.
+    
+    Args:
+        best_individual: List of indices representing the sequence of rectangles.
+        rectangles: List of Rectangle objects to pack.
+        bin: The bin to pack rectangles into.
+        
+    Returns:
+        Tuple containing:
+        - The packed bin
+        - List of cut lines
+        - Total height used
+    """
     cut_lines = []
     x, y = 0, 0
     max_height_in_row = 0
@@ -56,7 +68,7 @@ def pack_rectangles(best_individual: List[int], rectangles: List[Rectangle], bin
     for idx in best_individual:
         rect = rectangles[idx]
 
-        if force_new_line or x + rect.width > bin_width:
+        if force_new_line or x + rect.width > bin.width:
             # Start new row
             x = 0
             y += max_height_in_row

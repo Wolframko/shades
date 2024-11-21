@@ -50,7 +50,8 @@ This API allows you to pack rectangles into bins using a greedy algorithm. It pr
     "bins": [
       {
         "width": "float",
-        "height": "float"
+        "name": "string (optional)",
+        "id": "int (optional)"
       }
     ]
   }
@@ -61,8 +62,9 @@ This API allows you to pack rectangles into bins using a greedy algorithm. It pr
     "packed_bins": [
       {
         "width": "float",
-        "height": "float",
         "used_height": "float",
+        "name": "string",
+        "id": "int",
         "rectangles": [
           {
             "name": "string",
@@ -81,27 +83,32 @@ This API allows you to pack rectangles into bins using a greedy algorithm. It pr
 ### 2. Pack Rectangles (HTML)
 - **URL:** `/pack/html`
 - **Method:** `POST`
-- **Request Body:**
-  ```json
-  {
-    "rectangles": [
-      {
-        "name": "string",
-        "width": "float",
-        "height": "float",
-        "can_rotate": "bool"
-      }
-    ],
-    "bins": [
-      {
-        "width": "float",
-        "height": "float"
-      }
-    ]
-  }
-  ```
-- **Response:** HTML content visualizing the packed rectangles.
+- **Request Body:** Same as `/pack/json`
+- **Response:** HTML visualization of the packing solution
 
+## Bin Features
+
+### Bin Identification
+Each bin can be assigned:
+- **ID**: An optional integer identifier. If not provided, bins are automatically assigned IDs based on their order (0, 1, 2, ...).
+- **Name**: An optional string name. If not provided, bins are automatically named as "Bin_[ID]".
+
+Example request with custom bin identification:
+```json
+{
+  "rectangles": [...],
+  "bins": [
+    {
+      "width": 100,
+      "name": "Custom Bin A",
+      "id": 42
+    },
+    {
+      "width": 150  // Will get auto-generated ID and name
+    }
+  ]
+}
+```
 
 ### 4. Root
 - **URL:** `/`
@@ -112,7 +119,7 @@ This API allows you to pack rectangles into bins using a greedy algorithm. It pr
     "message": "Rectangle Packing API",
     "endpoints": ["/pack/json", "/pack/html"]
   }
-  ```
+```
 
 ## Project Structure
 

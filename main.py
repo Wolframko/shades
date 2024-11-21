@@ -45,6 +45,12 @@ class RectanglePackingGUI(QMainWindow):
         bin_width_layout.addWidget(self.bin_width_entry)
         bin_layout.addLayout(bin_width_layout)
 
+        bin_name_layout = QHBoxLayout()
+        bin_name_layout.addWidget(QLabel("Bin Name:"))
+        self.bin_name_entry = QLineEdit()
+        bin_name_layout.addWidget(self.bin_name_entry)
+        bin_layout.addLayout(bin_name_layout)
+
         add_bin_button = QPushButton("Add Bin")
         add_bin_button.clicked.connect(self.add_bin)
         bin_layout.addWidget(add_bin_button)
@@ -145,7 +151,11 @@ class RectanglePackingGUI(QMainWindow):
             print("Invalid input for bin width")
             return
 
-        bin = Bin(width)
+        name = self.bin_name_entry.text()
+        if not name:
+            name = f"Bin_{len(self.bins)}"
+
+        bin = Bin(width, len(self.bins), name)
         self.bins.append(bin)
         self.update_bin_list()
         self.clear_bin_inputs()
@@ -153,10 +163,11 @@ class RectanglePackingGUI(QMainWindow):
     def update_bin_list(self):
         self.bin_list.clear()
         for bin in self.bins:
-            self.bin_list.addItem(f"Bin: {bin.width}")
+            self.bin_list.addItem(f"{bin.name} (Width: {bin.width})")
 
     def clear_bin_inputs(self):
         self.bin_width_entry.clear()
+        self.bin_name_entry.clear()
 
     def remove_bin(self):
         current_row = self.bin_list.currentRow()
@@ -168,7 +179,7 @@ class RectanglePackingGUI(QMainWindow):
         filename, _ = QFileDialog.getSaveFileName(self, "Save Data", "", "JSON Files (*.json)")
         if filename:
             data = {
-                "bins": [{"width": b.width} for b in self.bins],
+                "bins": [{"width": b.width, "id": b.id, "name": b.name} for b in self.bins],
                 "rectangles": [{"name": r.name, "width": r.width, "height": r.height, "can_rotate": r.can_rotate} for r in self.rectangles]
             }
             with open(filename, "w") as f:
@@ -180,7 +191,7 @@ class RectanglePackingGUI(QMainWindow):
             if filename.endswith(('.json')):
                 with open(filename, "r") as f:
                     data = json.load(f)
-                self.bins = [Bin(b["width"]) for b in data["bins"]]
+                self.bins = [Bin(b["width"], idx, f"Bin_{idx}") for idx, b in enumerate(data["bins"])]
                 self.rectangles = [Rectangle(**r) for r in data["rectangles"]]
             elif filename.endswith(('.xlsx', '.xls')):
                 df = pd.read_excel(filename, header=None)

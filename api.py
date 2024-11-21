@@ -18,6 +18,8 @@ class RectangleInput(BaseModel):
 
 class BinInput(BaseModel):
     width: float
+    name: str = None
+    id: int = None
 
 class PackingInput(BaseModel):
     rectangles: List[RectangleInput]
@@ -25,7 +27,7 @@ class PackingInput(BaseModel):
 
 def pack_rectangles_helper(input_data: PackingInput):
     rectangles = [Rectangle(**rect.dict()) for rect in input_data.rectangles]
-    bins = [Bin(**bin.dict()) for bin in input_data.bins]
+    bins = [Bin(bin.width, bin.id if bin.id is not None else idx, bin.name if bin.name else f"Bin_{idx}") for idx, bin in enumerate(input_data.bins)]
     results = pack_multiple_bins(rectangles, bins)
     
     # Track packed rectangles
@@ -48,6 +50,8 @@ async def pack_rectangles_json(input_data: PackingInput):
             {
                 "width": bin.width,
                 "used_height": bin.used_height,
+                "name": bin.name,
+                "id": bin.id,
                 "rectangles": [
                     {
                         "name": rect.name,
